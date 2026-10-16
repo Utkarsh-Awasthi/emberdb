@@ -1,0 +1,24 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "emberdb"
+version = "0.1.0"
+description = "An independent, from-scratch, pure-Python in-memory database server — RESP-compatible, with native JSON documents, secondary indexing, vector search, CDC, and a built-in dashboard."
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "See README.md" }
+dependencies = []
+
+[project.optional-dependencies]
+dev = ["pytest>=7"]
+
+[project.scripts]
+emberdb = "emberdb.__main__:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+emberdb = ["dashboard/*.html", "dashboard/*.css", "dashboard/*.js"]

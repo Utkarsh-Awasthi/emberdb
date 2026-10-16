@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EmberDB — Console</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🔥</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/style.css">
+</head>
+<body>
+
+<div class="app">
+
+  <header class="statusbar">
+    <div class="statusbar__brand">
+      <span class="ember-mark" aria-hidden="true"></span>
+      <span class="statusbar__name">EmberDB</span>
+    </div>
+    <div class="statusbar__facts">
+      <span class="fact"><span class="fact__label">branch</span><span class="fact__value" id="fact-branch">—</span></span>
+      <span class="fact"><span class="fact__label">role</span><span class="fact__value" id="fact-role">—</span></span>
+      <span class="fact"><span class="fact__label">uptime</span><span class="fact__value" id="fact-uptime">—</span></span>
+      <span class="fact"><span class="fact__label">version</span><span class="fact__value" id="fact-version">—</span></span>
+    </div>
+    <div class="statusbar__link">
+      <span class="live-dot" id="live-dot"></span>
+      <span id="live-label">connecting…</span>
+    </div>
+  </header>
+
+  <section class="kpi-strip" id="kpi-strip">
+    <div class="kpi">
+      <div class="kpi__label">ops / sec</div>
+      <div class="kpi__value" id="kpi-ops">0</div>
+      <canvas class="kpi__spark" id="kpi-ops-spark" width="140" height="32"></canvas>
+    </div>
+    <div class="kpi">
+      <div class="kpi__label">memory used</div>
+      <div class="kpi__value" id="kpi-memory">0 B</div>
+      <div class="kpi__sub" id="kpi-memory-sub">no limit set</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi__label">hit ratio</div>
+      <div class="kpi__value" id="kpi-hitratio">—</div>
+      <div class="kpi__sub" id="kpi-hitratio-sub">0 hits / 0 misses</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi__label">clients</div>
+      <div class="kpi__value" id="kpi-clients">0</div>
+      <div class="kpi__sub" id="kpi-clients-sub">0 total seen</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi__label">keys</div>
+      <div class="kpi__value" id="kpi-keys">0</div>
+      <div class="kpi__sub" id="kpi-keys-sub">across all dbs</div>
+    </div>
+  </section>
+
+  <section class="heatpanel">
+    <div class="heatpanel__head">
+      <h2>Keyspace heat</h2>
+      <p>Every key currently sampled, laid out cold → hot by how recently and how often it's been touched. This is real
+        access data from the same LRU/LFU bookkeeping eviction uses — not a decoration.</p>
+    </div>
+    <div class="heatstrip" id="heatstrip" role="img" aria-label="Keyspace access heat, cold to hot"></div>
+    <div class="heatpanel__legend">
+      <span>cold</span>
+      <span class="heatpanel__gradient"></span>
+      <span>hot</span>
+    </div>
+  </section>
+
+  <section class="grid-two">
+    <div class="panel">
+      <div class="panel__head">
+        <h2>Change stream</h2>
+        <span class="panel__badge" id="cdc-offset">offset 0</span>
+      </div>
+      <div class="cdc-log" id="cdc-log">
+        <div class="cdc-empty">Waiting for writes…</div>
+      </div>
+    </div>
+
+    <div class="panel">
+      <div class="panel__head">
+        <h2>Command console</h2>
+        <span class="panel__badge" id="console-db">db 0</span>
+      </div>
+      <div class="console">
+        <div class="console__output" id="console-output"><div class="console__hint">Type a command below — e.g. <code>SET foo bar</code>, <code>HGETALL user:1</code>, <code>FIND idx_email WHERE email = bob@example.com</code></div></div>
+        <form class="console__form" id="console-form" autocomplete="off">
+          <span class="console__prompt">&gt;</span>
+          <input class="console__input" id="console-input" type="text" placeholder="SET foo bar" spellcheck="false">
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <section class="panel panel--wide">
+    <div class="panel__head">
+      <h2>Keyspace</h2>
+      <div class="keyspace__controls">
+        <select id="keyspace-db"></select>
+        <input id="keyspace-pattern" type="text" placeholder="pattern, e.g. user:*" value="*">
+      </div>
+    </div>
+    <table class="keytable">
+      <thead>
+        <tr><th>key</th><th>type</th><th>ttl</th><th>last access</th><th>access count</th></tr>
+      </thead>
+      <tbody id="keytable-body">
+        <tr><td colspan="5" class="keytable__empty">Loading…</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <footer class="footer">
+    <span>EmberDB — an independent, from-scratch implementation. Not affiliated with Redis.</span>
+  </footer>
+
+</div>
+
+<script src="/app.js"></script>
+</body>
+</html>
